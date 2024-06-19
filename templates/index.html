@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Archive</title>
+</head>
+<body>
+<h1>PDF Archive</h1>
+{% for year, parshas in grouped_pdfs.items() %}
+<h2>{{ year }}</h2>
+<ul>
+    {% for parsha, filename in parshas %}
+    <li><a href="../divrei_torah/maamarei_mordechai/{{ filename }}" target="_blank">{{ parsha }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
+</body>
+</html>
+
