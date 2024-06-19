@@ -1,20 +1,244 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Archive</title>
+    <title>
+        Maamarei Mordechai | Rabbi D. Mordy Schlachter
+    </title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport"/>
+    <link href="assets/css/main.css" rel="stylesheet"/>
+    <noscript>
+        <link href="assets/css/noscript.css" rel="stylesheet"/>
+    </noscript>
+    <link href="/images/logo.svg" rel="icon" type="image/x-icon"/>
+    <style>
+        .parsha-list {
+            margin-left: 20px;
+        }
+        .year {
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .arrow {
+            margin-right: 10px;
+            transition: transform 0.3s;
+        }
+        .arrow-down {
+            transform: rotate(90deg);
+        }
+        .arrow-right {
+            transform: rotate(0deg);
+        }
+    </style>
 </head>
-<body>
-<h1>PDF Archive</h1>
-{% for year, parshas in grouped_pdfs.items() %}
-<h2>{{ year }}</h2>
-<ul>
-    {% for parsha, filename in parshas %}
-    <li><a href="../divrei_torah/maamarei_mordechai/{{ filename }}" target="_blank">{{ parsha }}</a></li>
-    {% endfor %}
-</ul>
-{% endfor %}
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <!-- Logo -->
+            <a class="logo" href="index.html">
+      <span class="symbol">
+       <img alt="" src="images/logo.svg"/>
+      </span>
+                <span class="title">
+       Rabbi D. Mordy Schlachter
+      </span>
+            </a>
+            <!-- Nav -->
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#menu">
+                            Menu
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Menu -->
+    <nav id="menu">
+        <h2>
+            Menu
+        </h2>
+        <ul>
+            <li>
+                <a href="index.html#">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="index.html#about">
+                    About
+                </a>
+            </li>
+            <li>
+                <a href="index.html#work">
+                    Work
+                </a>
+                <ul>
+                    <li>
+                        <a href="maamarei_mordechai.html">
+                            Maamarei Mordechai
+                        </a>
+                    </li>
+                    <li>
+                        <a href="kaarah.html">
+                            Kaarah
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="index.html#contact">
+                    Contact
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Main -->
+    <div id="main">
+        <div class="inner">
+            {% for year, parshas in grouped_pdfs.items() %}
+            <div class="year" onclick="toggleParsha('{{ year }}')" onmousedown="preventSelection(event)">
+                <span id="arrow-{{ year }}" class="arrow arrow-right">&#9654;</span>
+                {{ year }}
+            </div>
+                <ul id="{{ year }}" class="parsha-list" style="display: none">
+                {% for parsha, filename in parshas %}
+                    <li>
+                        <a href="../divrei_torah/maamarei_mordechai/{{ filename }}" target="blank">
+                            {{ parsha }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer id="footer" style="padding-bottom: 1em">
+        <div class="inner" id="contact">
+            <section>
+                <h2>
+                    Get in touch
+                </h2>
+                <form data-netlify="true" method="post" name="contact">
+                    <div class="fields">
+                        <div class="field half">
+                            <label for="name"></label><input id="name" name="name" placeholder="Name" type="text"/>
+                        </div>
+                        <div class="field half">
+                            <label for="email"></label><input id="email" name="email" placeholder="Email" type="email"/>
+                        </div>
+                        <div class="field">
+                            <label for="message"></label><textarea id="message" name="message"
+                                                                   placeholder="Message"></textarea>
+                        </div>
+                    </div>
+                    <ul class="actions">
+                        <li>
+                            <input class="primary" type="submit" value="Send"/>
+                        </li>
+                    </ul>
+                </form>
+            </section>
+            <section>
+                <div style="background: #585858; color: #ffffff; padding: 1.5em; border-radius: 4px;">
+                    <h2>
+                        Subscribe to
+                        <br/>
+                        our mailing list
+                    </h2>
+                    <form action="https://radmash.us21.list-manage.com/subscribe/post?u=dd76396bb696e8faf76b7122a&amp;id=c4c73bedd9&amp;f_id=0064c5e1f0"
+                          class="validate" id="mc-embedded-subscribe-form" method="post"
+                          name="mc-embedded-subscribe-form" target="_blank">
+                        <div class="fields" id="mc_embed_signup_scroll">
+                            <!--										<div class="field half">-->
+                            <!--											<input type="text" name="FNAME" class="required" id="mce-FNAME" required placeholder="First Name" />-->
+                            <!--										</div>-->
+                            <!--										<div class="field half">-->
+                            <!--											<input type="text" name="LNAME" class="required" id="mce-LNAME" required placeholder="Last Name" />-->
+                            <!--										</div>-->
+                            <div class="field">
+                                <label for="mce-EMAIL"></label><input class="required email" id="mce-EMAIL" name="EMAIL"
+                                                                      placeholder="Email"
+                                                                      required="" type="email"/>
+                            </div>
+                            <div hidden>
+                                <input name="tags" type="hidden" value="3338"/>
+                            </div>
+                            <div class="clear foot" id="mce-responses">
+                                <div class="response" id="mce-error-response" style="display:none">
+                                </div>
+                                <div class="response" id="mce-success-response" style="display:none">
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="actions">
+                            <li>
+                                <input id="mc-embedded-subscribe" style="background-color: #ffffff;" type="submit"
+                                       value="Subscribe"/>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </section>
+            <ul class="copyright">
+                <li>&copy; <a href="index.html">David M. Schlachter</a>. All rights reserved.</li>
+                <li>Proud Partner of : <a href="https://www.shulert.com" target="_blank">Shulert Inc.</a></li>
+                <li><a class="icon brands style2 fa-youtube" href="https://www.youtube.com/@rabbimordy613"
+                       target="_blank"><span class="label">Youtube</span></a></li>
+                <li style="border-left: none; padding: 0;"><a class="icon brands style2 fa-tiktok"
+                                                              href="https://www.tiktok.com/@rabbimordy613"
+                                                              target="_blank"><span class="label">TikTok</span></a></li>
+                <li style="border-left: none; padding: 0;"><a class="icon brands style2 fa-twitter"
+                                                              href="https://twitter.com/RabbiMordy613"
+                                                              target="_blank"><span class="label">Twitter</span></a>
+                </li>
+                <li style="border-left: none; padding: 0;"><a class="icon solid style2 fa-envelope"
+                                                              href="mailto:mordy@radmash.com"
+                                                              target="_blank"><span class="label">Email</span></a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</div>
+<!-- Scripts -->
+<script>
+    function toggleParsha(year) {
+        var element = document.getElementById(year);
+        var arrow = document.getElementById('arrow-' + year);
+        if (element.style.display === "none") {
+            element.style.display = "block";
+            arrow.classList.remove('arrow-right');
+            arrow.classList.add('arrow-down');
+        } else {
+            element.style.display = "none";
+            arrow.classList.remove('arrow-down');
+            arrow.classList.add('arrow-right');
+        }
+    }
+
+
+    function preventSelection(event) {
+        event.preventDefault();
+    }
+</script>
+<script src="assets/js/jquery.min.js">
+</script>
+<script src="assets/js/browser.min.js">
+</script>
+<script src="assets/js/breakpoints.min.js">
+</script>
+<script src="assets/js/util.js">
+</script>
+<script src="assets/js/main.js">
+</script>
 </body>
 </html>
-
