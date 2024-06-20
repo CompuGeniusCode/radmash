@@ -66,7 +66,7 @@ def generate_html():
 
     grouped_pdfs = dict(sorted(grouped_pdfs.items(), reverse=True))
 
-    index_html = render_template('index.html', {'grouped_pdfs': grouped_pdfs})
+    index_html = render_template('maamarei_mordechai_template.html', {'grouped_pdfs': grouped_pdfs})
     with open('maamarei_mordechai.html', 'w') as f:
         f.write(index_html)
 
@@ -86,28 +86,15 @@ def fix_filenames():
             new_filename = new_filename.replace('_-_202', '_202')
             new_filename = new_filename.replace('-_202', '_202')
 
-            new_filename = new_filename.replace('behaaloscha', 'beha\'aloscha')
-
             if 'achrei' in new_filename and 'mos' not in new_filename:
                 new_filename = new_filename.replace('achrei', 'achrei_mos')
 
             if 'matos' in new_filename and 'maasei' not in new_filename:
                 new_filename = new_filename.replace('matos', 'matos_-_maasei')
 
-            new_filename = new_filename.replace('matos_maasei', 'matos_-_maasei')
-
-            new_filename = new_filename.replace("2022", "5782")
-            new_filename = new_filename.replace("2021", "5781")
-
-            if 'bereishis' in new_filename or 'noach' in new_filename or 'lech_lecha' in new_filename or 'vayera' in new_filename or 'chayei_sarah' in new_filename or 'toldos' in new_filename or 'vayetzei' in new_filename or 'vayishlach' in new_filename or 'vayeshev' in new_filename or 'miketz' in new_filename or 'vayigash' in new_filename or 'vayechi' in new_filename:
-                new_filename = new_filename.replace("2022", "5783")
-
-            if 'rosh_hashanah' in new_filename or 'yom_kippur' in new_filename or 'vayeilech' in new_filename or 'haazinu' in new_filename or 'succos' in new_filename:
-                new_filename = new_filename.replace("2022", "5783")
-
             os.rename(os.path.join(PDF_DIR, filename), os.path.join(PDF_DIR, new_filename))
 
 
 if __name__ == '__main__':
-    # fix_filenames()
+    fix_filenames()
     generate_html()
