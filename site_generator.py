@@ -32,9 +32,11 @@ def parse_filename(filename):
 
 def get_sort_key(pdf):
     year, parsha, filename = pdf
-    parsha_stripped = parsha.removesuffix(' Bonus Shtikel')
-    if parsha_stripped in parsha_order:
-        return year, parsha_order.index(parsha_stripped)
+    # parsha = parsha.removesuffix(' Bonus Shtikel')
+    if parsha.endswith(' Bonus Shtikel'):
+        parsha = parsha[:-len(' Bonus Shtikel')]
+    if parsha in parsha_order:
+        return year, parsha_order.index(parsha)
     else:
         return year, float('inf')
 
