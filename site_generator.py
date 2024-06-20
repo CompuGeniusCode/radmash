@@ -9,20 +9,16 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-# for filename in os.listdir(PDF_DIR):
-#     if filename.endswith('.pdf'):
-#         new_filename = filename.lower().removeprefix("_")
-#         os.rename(os.path.join(PDF_DIR, filename), os.path.join(PDF_DIR, new_filename))
-
-
 parsha_order = ["Bereishis", "Noach", "Lech Lecha", "Vayera", "Chayei Sarah", "Toldos", "Vayetzei", "Vayishlach",
-                "Vayeshev", "Channukah", "Miketz", "Vayigash", "Vaychi", "Shmos", "Vaera", "Bo", "Beshalach", "Yisro",
-                "Mishpatim", "Terumah", "Titzaveh", "Purim", "Ki Sisa", "Vayakel - Pekudei", "Vayakel", "Pekudei",
-                "Vayikra", "Tzav", "Shmini", "Tazria - Metzora", "Tazria", "Metzora", "Achrei Mos - Kedoshim",
+                "Vayeshev", "Channukah", "Miketz", "Vayigash", "Vayechi", "Shmos", "Vaera", "Bo", "Beshalach", "Yisro",
+                "Mishpatim", "Teruma", "Titzaveh", "Purim", "Ki Sisa", "Vayakel - Pekudei", "Vayakel", "Pekudei",
+                "Vayikra", "Tzav", "Shmini", "Pesach", "Tazria - Metzora", "Tazria", "Metzora", "Achrei Mos - Kedoshim",
                 "Achrei Mos", "Kedoshim", "Emor", "Behar - Bechukosai", "Behar", "Bechukosai", "Bamidbar and Shavuos",
-                "Bamidbar", "Shavuos", "Naso", "Behaaloscha", "Shlach", "Korach", "Chukas", "Balak", "Pinchas",
+                "Bamidbar", "Shavuos", "Rus", "Naso", "Beha'aloscha", "Shlach", "Korach", "Chukas", "Balak", "Pinchas",
                 "Matos - Maasei", "Matos", "Maasei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim",
-                "Ki Tzeitzei", "Ki Savo", "Nitzavim", "Vayeilech", "Haazinu and Succos", "Haazinu", "Vezot Haberachah"]
+                "Ki Tzeitzei", "Ki Savo", "Nitzavim - Vayeilech", "Nitzavim - Rosh Hashanah", "Nitzavim",
+                "Rosh Hashanah", "Vayeilech", "Yom Kippur", "Haazinu and Succos", "Haazinu", "Succos",
+                "Vezot Haberachah"]
 
 
 def parse_filename(filename):
@@ -34,6 +30,15 @@ def parse_filename(filename):
     return None, None
 
 
+def get_sort_key(pdf):
+    year, parsha, filename = pdf
+    parsha_stripped = parsha.removesuffix(' Bonus Shtikel')
+    if parsha_stripped in parsha_order:
+        return year, parsha_order.index(parsha_stripped)
+    else:
+        return year, float('inf')
+
+
 def get_pdfs():
     pdfs = []
     for filename in os.listdir(PDF_DIR):
@@ -42,8 +47,7 @@ def get_pdfs():
             if year and parsha:
                 pdfs.append((year, parsha, filename))
 
-    pdfs.sort(key=lambda x: (x[0], parsha_order.index(x[1]) if x[1] in parsha_order else float('inf')))
-
+    pdfs.sort(key=get_sort_key)
     return pdfs
 
 
@@ -60,10 +64,50 @@ def generate_html():
             grouped_pdfs[year] = []
         grouped_pdfs[year].append((parsha, filename))
 
+    grouped_pdfs = dict(sorted(grouped_pdfs.items(), reverse=True))
+
     index_html = render_template('index.html', {'grouped_pdfs': grouped_pdfs})
-    with open('test.html', 'w') as f:
+    with open('maamarei_mordechai.html', 'w') as f:
         f.write(index_html)
 
 
+def fix_filenames():
+    for filename in os.listdir(PDF_DIR):
+        if filename.endswith('.pdf'):
+            new_filename = filename.lower()
+            new_filename = new_filename.replace('dvar torah - ', '')
+            new_filename = new_filename.replace('dvar torah ', '')
+            new_filename = new_filename.replace('dvar torah', '')
+            new_filename = new_filename.replace('dvar_torah', '')
+            new_filename = new_filename.replace('abridged', '')
+            new_filename = new_filename.replace('parshas', '')
+            new_filename = new_filename.replace(' ', '_')
+            new_filename = new_filename.replace('__', '_')
+            new_filename = new_filename.replace('_-_202', '_202')
+            new_filename = new_filename.replace('-_202', '_202')
+
+            new_filename = new_filename.replace('behaaloscha', 'beha\'aloscha')
+
+            if 'achrei' in new_filename and 'mos' not in new_filename:
+                new_filename = new_filename.replace('achrei', 'achrei_mos')
+
+            if 'matos' in new_filename and 'maasei' not in new_filename:
+                new_filename = new_filename.replace('matos', 'matos_-_maasei')
+
+            new_filename = new_filename.replace('matos_maasei', 'matos_-_maasei')
+
+            new_filename = new_filename.replace("2022", "5782")
+            new_filename = new_filename.replace("2021", "5781")
+
+            if 'bereishis' in new_filename or 'noach' in new_filename or 'lech_lecha' in new_filename or 'vayera' in new_filename or 'chayei_sarah' in new_filename or 'toldos' in new_filename or 'vayetzei' in new_filename or 'vayishlach' in new_filename or 'vayeshev' in new_filename or 'miketz' in new_filename or 'vayigash' in new_filename or 'vayechi' in new_filename:
+                new_filename = new_filename.replace("2022", "5783")
+
+            if 'rosh_hashanah' in new_filename or 'yom_kippur' in new_filename or 'vayeilech' in new_filename or 'haazinu' in new_filename or 'succos' in new_filename:
+                new_filename = new_filename.replace("2022", "5783")
+
+            os.rename(os.path.join(PDF_DIR, filename), os.path.join(PDF_DIR, new_filename))
+
+
 if __name__ == '__main__':
+    # fix_filenames()
     generate_html()
