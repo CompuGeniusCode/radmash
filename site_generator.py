@@ -9,7 +9,7 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-parshas_url = "https://github.com/CompuGenius-Programs/RadmashUploader/blob/main/parshas.json"
+parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/RadmashUploader/main/parshas.json"
 parsha_order = requests.get(parshas_url).json()["parshas"]
 
 
