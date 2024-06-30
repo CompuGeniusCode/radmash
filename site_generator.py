@@ -9,16 +9,8 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-parsha_order = ["Bereishis", "Noach", "Lech Lecha", "Vayera", "Chayei Sarah", "Toldos", "Vayetzei", "Vayishlach",
-                "Vayeshev", "Channukah", "Miketz", "Vayigash", "Vayechi", "Shmos", "Vaera", "Bo", "Beshalach", "Yisro",
-                "Mishpatim", "Teruma", "Titzaveh", "Purim", "Ki Sisa", "Vayakel - Pekudei", "Vayakel", "Pekudei",
-                "Vayikra", "Tzav", "Shmini", "Pesach", "Tazria - Metzora", "Tazria", "Metzora", "Achrei Mos - Kedoshim",
-                "Achrei Mos", "Kedoshim", "Emor", "Behar - Bechukosai", "Behar", "Bechukosai", "Bamidbar and Shavuos",
-                "Bamidbar", "Shavuos", "Rus", "Naso", "Beha'aloscha", "Shlach", "Korach", "Chukas", "Balak", "Pinchas",
-                "Matos - Maasei", "Matos", "Maasei", "Devarim", "Vaeschanan", "Eikev", "Re'eh", "Shoftim",
-                "Ki Tzeitzei", "Ki Savo", "Nitzavim - Vayeilech", "Nitzavim - Rosh Hashanah", "Nitzavim",
-                "Rosh Hashanah", "Vayeilech", "Yom Kippur", "Haazinu and Succos", "Haazinu", "Succos",
-                "Vezot Haberachah"]
+parshas_url = "https://github.com/CompuGenius-Programs/RadmashUploader/blob/main/parshas.json"
+parsha_order = requests.get(parshas_url).json()["parshas"]
 
 
 def parse_filename(filename):
