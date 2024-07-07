@@ -1,6 +1,7 @@
 import os
 import re
 
+import requests
 from jinja2 import Environment, FileSystemLoader
 from titlecase import titlecase
 
