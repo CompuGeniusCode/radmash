@@ -104,6 +104,9 @@
     <!-- Main -->
     <div id="main">
         <div class="inner">
+            <div id="this-weeks-dvar-torah">
+                <h3><a href="divrei_torah/maamarei_mordechai/{{ this_weeks_dvar_torah[1] }}" target="_blank">This Week's Dvar Torah - {{ this_weeks_dvar_torah[0] }}</a></h3>
+            </div>
             {% for year, parshas in grouped_pdfs.items() %}
             <div class="year" onclick="toggleParsha('{{ year }}')" onmousedown="preventSelection(event)">
                 <span id="arrow-{{ year }}" class="arrow arrow-right">&#9654;</span>

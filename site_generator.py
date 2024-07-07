@@ -10,7 +10,7 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/RadmashUploader/main/parshas.json"
+parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/Radmash/main/parshas.json"
 parsha_order = requests.get(parshas_url).json()["parshas"]
 
 
@@ -53,6 +53,7 @@ def render_template(template_name, context):
 
 def generate_html():
     pdfs = get_pdfs()
+
     grouped_pdfs = {}
     for year, parsha, filename in pdfs:
         if year not in grouped_pdfs:
@@ -61,7 +62,14 @@ def generate_html():
 
     grouped_pdfs = dict(sorted(grouped_pdfs.items(), reverse=True))
 
-    index_html = render_template('maamarei_mordechai_template.html', {'grouped_pdfs': grouped_pdfs})
+    this_weeks_dvar_torah = grouped_pdfs[list(grouped_pdfs.keys())[0]][-1]
+
+    context = {
+        'grouped_pdfs': grouped_pdfs,
+        'this_weeks_dvar_torah': this_weeks_dvar_torah
+    }
+
+    index_html = render_template('maamarei_mordechai_template.html', context)
     with open('maamarei_mordechai.html', 'w') as f:
         f.write(index_html)
 
