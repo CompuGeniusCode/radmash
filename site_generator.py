@@ -64,6 +64,15 @@ def generate_html():
 
     this_weeks_dvar_torah = grouped_pdfs[list(grouped_pdfs.keys())[0]][-1]
 
+    with open('_redirects', 'r') as f:
+        lines = f.readlines()
+        for i, line in enumerate(lines):
+            if '/maamarei_mordechai/latest' in line:
+                lines[i] = f'/maamarei_mordechai/latest {this_weeks_dvar_torah[1]}\n'
+                break
+    with open('_redirects', 'w') as f:
+        f.writelines(lines)
+
     context = {
         'grouped_pdfs': grouped_pdfs,
         'this_weeks_dvar_torah': this_weeks_dvar_torah
