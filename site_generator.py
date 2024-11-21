@@ -1,7 +1,7 @@
 import os
 import re
 
-import requests
+import json
 from jinja2 import Environment, FileSystemLoader
 from titlecase import titlecase
 
@@ -10,12 +10,8 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/Radmash/main/parshas.json"
-res = requests.get(parshas_url)
-if res.status_code == 200:
-    parsha_order = res.json()
-else:
-    print(res.text)
+with open('parshas.json', 'r') as f:
+    parsha_order = json.load(f)['parshas']
 
 
 def parse_filename(filename):
