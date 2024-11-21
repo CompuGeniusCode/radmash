@@ -11,7 +11,11 @@ TEMPLATE_DIR = 'templates'
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/Radmash/main/parshas.json"
-parsha_order = requests.get(parshas_url).json()["parshas"]
+res = requests.get(parshas_url)
+if res.status_code == 200:
+    parsha_order = res.json()
+else:
+    print(res.text)
 
 
 def parse_filename(filename):
