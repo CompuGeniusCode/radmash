@@ -1,7 +1,7 @@
 import os
 import re
 
-import json
+import requests
 from jinja2 import Environment, FileSystemLoader
 from titlecase import titlecase
 
@@ -10,8 +10,9 @@ TEMPLATE_DIR = 'templates'
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-with open('parshas.json', 'r') as f:
-    parsha_order = json.load(f)['parshas']
+parshas_url = "https://raw.githubusercontent.com/CompuGenius-Programs/Radmash/main/parshas.json"
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+parsha_order = requests.get(parshas_url, headers=headers).json()["parshas"]
 
 
 def parse_filename(filename):
@@ -68,15 +69,13 @@ def generate_html():
         lines = f.readlines()
         for i, line in enumerate(lines):
             if '/maamarei_mordechai/latest' in line:
-                lines[i] = f'/maamarei_mordechai/latest /divrei_torah/maamarei_mordechai/{this_weeks_dvar_torah[1]} 200\n'
+                lines[
+                    i] = f'/maamarei_mordechai/latest /divrei_torah/maamarei_mordechai/{this_weeks_dvar_torah[1]} 200\n'
                 break
     with open('_redirects', 'w') as f:
         f.writelines(lines)
 
-    context = {
-        'grouped_pdfs': grouped_pdfs,
-        'this_weeks_dvar_torah': this_weeks_dvar_torah
-    }
+    context = {'grouped_pdfs': grouped_pdfs, 'this_weeks_dvar_torah': this_weeks_dvar_torah}
 
     index_html = render_template('maamarei_mordechai_template.html', context)
     with open('maamarei_mordechai.html', 'w') as f:
