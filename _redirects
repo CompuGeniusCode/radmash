@@ -1,1 +1,8 @@
 /maamarei_mordechai/latest     /divrei_torah/maamarei_mordechai/shelach_5784.pdf 200
+
+http://radmash.com/*            https://www.radmash.org/:splat 301!
+https://radmash.com/*           https://www.radmash.org/:splat 301!
+http://www.radmash.com/*        https://www.radmash.org/:splat 301!
+https://www.radmash.com/*       https://www.radmash.org/:splat 301!
+http://radmash.netlify.app/*    https://www.radmash.org/:splat 301!
+https://radmash.netlify.app/*   https://www.radmash.org/:splat 301!
